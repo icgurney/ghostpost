@@ -1,0 +1,38 @@
+# fly.toml app configuration file generated for ghostpost on 2024-12-31T10:02:50-06:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'ghostpost'
+primary_region = 'iad'
+
+[build]
+  [build.args]
+    GO_VERSION = '1.23.4'
+
+[env]
+  PORT = '2525'
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 2525
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+  # mapping these three ports ALL to internal 25
+  # https://community.fly.io/t/receiving-email-inbound-smtp/1033/24
+  [[services.ports]]
+    handlers = ["proxy_proto"]
+    port = 25
+
+  [[services.ports]]
+    handlers = ["tls", "proxy_proto"]
+    port = 465
+
+  [[services.ports]]
+    handlers = ["proxy_proto"]
+    port = 587
+
+[[vm]]
+  size = 'shared-cpu-1x'

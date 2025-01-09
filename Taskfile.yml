@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  run:
+    cmds:
+      - go run cmd/mail/main.go
+
+  test:
+    cmds:
+      - go test ./...
+  
+  deploy:
+    cmds:
+      - fly deploy
+  
+  build:
+    cmds:
+      - docker build .
